@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<controls:ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
+             xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
+             x:Class="bme_fon_ferallan.Clicker.ClickerPage">
+
+    <controls:ScrollView>
+        <controls:VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <controls:Image
+                Source="dotnet_bot.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                controls:SemanticProperties.Description="dot net bot in a race car number eight" />
+
+            <controls:Label
+                Text="Hello, World!"
+                Style="{xaml:StaticResource Headline}"
+                controls:SemanticProperties.HeadingLevel="Level1" />
+
+            <controls:Label
+                Text="Welcome to &#10;.NET Multi-platform App UI"
+                Style="{xaml:StaticResource SubHeadline}"
+                controls:SemanticProperties.HeadingLevel="Level2"
+                controls:SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+
+            <controls:Button
+                x:Name="CounterBtn"
+                Text="Click me" 
+                controls:SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="OnCounterClicked"
+                HorizontalOptions="Fill" />
+
+            <controls:Button
+                x:Name="PrestigeBtn"
+                Text="Click me" 
+                controls:SemanticProperties.Hint="Counts the number of times you prestige"
+                Clicked="OnPrestigeClicked"
+                IsVisible="False"
+                HorizontalOptions="Fill" />
+        </controls:VerticalStackLayout>
+    </controls:ScrollView>
+
+</controls:ContentPage>

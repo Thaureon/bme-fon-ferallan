@@ -4,7 +4,8 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:bme_fon_ferallan"
-    Shell.FlyoutBehavior="Disabled"
+    xmlns:clicker="clr-namespace:bme_fon_ferallan.Clicker"
+    Shell.FlyoutBehavior="Flyout"
     Title="bme_fon_ferallan">
 
     <ShellContent
@@ -12,4 +13,8 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
+    <ShellContent
+        Title="Clicker"
+        ContentTemplate="{DataTemplate clicker:ClickerPage}"
+        Route="ClickerPage" />
 </Shell>
