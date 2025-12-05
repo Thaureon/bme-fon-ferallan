@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
              xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
-             x:Class="bme_fon_ferallan.Clicker.ClickerPage">
+             x:Class="bme_fon_ferallan.API.ApiPage">
 
     <controls:ScrollView>
         <controls:VerticalStackLayout
@@ -20,33 +20,23 @@
                 Style="{xaml:StaticResource Headline}"
                 controls:SemanticProperties.HeadingLevel="Level1" />
 
-            <controls:Label
-                Text="Welcome to &#10;.NET Multi-platform App UI"
-                Style="{xaml:StaticResource SubHeadline}"
-                controls:SemanticProperties.HeadingLevel="Level2"
-                controls:SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+            <controls:Entry
+                x:Name="StateCheckInput"
+                controls:SemanticProperties.Hint="Select State for price check"
+                controls:SemanticProperties.Description="Select State for price check" />
 
             <controls:Button
-                x:Name="PersonBtn"
-                Text="Create some people" 
-                controls:SemanticProperties.Hint="Counts the number of people you make"
-                Clicked="OnPersonCounterClicked"
+                x:Name="StateCheckBtn"
+                Text="Check price for state above" 
+                controls:SemanticProperties.Hint="Check price of state and cities in state"
+                Clicked="OnStateUsaPriceCheck"
                 HorizontalOptions="Fill" />
 
             <controls:Button
-                x:Name="CityBtn"
-                Text="Build some cities"
-                controls:SemanticProperties.Hint="Counts the number of cities you make"
-                Clicked="OnCityCounterClicked"
-                IsVisible="False"
-                HorizontalOptions="Fill" />
-
-            <controls:Button
-                x:Name="CountryBtn"
-                Text="Build some countries"
-                controls:SemanticProperties.Hint="Counts the number of countries you make"
-                Clicked="OnCountryCounterClicked"
-                IsVisible="False"
+                x:Name="CityCheckBtn"
+                Text="Check price for city above" 
+                controls:SemanticProperties.Hint="Check price of single city"
+                Clicked="OnCityPriceCheck"
                 HorizontalOptions="Fill" />
         </controls:VerticalStackLayout>
     </controls:ScrollView>

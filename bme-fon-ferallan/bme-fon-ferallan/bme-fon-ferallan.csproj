@@ -24,15 +24,22 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
+		<PackageReference Include="RestEase" Version="1.6.4" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="API\ApiPage.xaml.cs">
+	    <DependentUpon>ApiPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Clicker\ClickerPage.xaml.cs">
 	    <DependentUpon>ClickerPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="API\ApiPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Clicker\ClickerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

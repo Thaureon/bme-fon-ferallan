@@ -2,56 +2,98 @@
 {
     public partial class ClickerPage : ContentPage
     {
-        private int _count;
-        private int _prestigeCount;
+        private int _peopleCount;
+        private int _cityCount;
+        private int _countryCount;
 
         public ClickerPage()
         {
             InitializeComponent();
-            _count = 0;
-            _prestigeCount = 0;
+            _peopleCount = 0;
+            _cityCount = 0;
+            _countryCount = 0;
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void OnPersonCounterClicked(object sender, EventArgs e)
         {
-            _count++;
+            _peopleCount++;
 
-            var counterText = $"Clicked {_count} time";
+            var personText = "people";
 
-            if (_count != 1)
+            if (_peopleCount == 1)
             {
-                counterText += "s";
+                personText = "person";
             }
 
-            if (_count >= 20)
+            if (_peopleCount >= 20)
             {
-                PrestigeBtn.IsVisible = true;
-                PrestigeBtn.IsEnabled = true;
+                CityBtn.IsVisible = true;
+                CityBtn.IsEnabled = true;
             }
+            var counterText = $"{_peopleCount} {personText} created";
 
-            CounterBtn.Text = counterText;
+            PersonBtn.Text = counterText;
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            SemanticScreenReader.Announce(PersonBtn.Text);
         }
 
-        private void OnPrestigeClicked(object sender, EventArgs e)
+        private void OnCityCounterClicked(object sender, EventArgs e)
         {
-            _prestigeCount++;
-            _count = 0;
+            _cityCount++;
 
-            var prestigeText = $"Prestiged {_prestigeCount} time";
+            _peopleCount = 0;
 
-            if (_prestigeCount != 1)
+            var cityText = "City";
+
+            if (_cityCount != 1)
             {
-                prestigeText += "s";
+                cityText = "Cities";
             }
 
-            PrestigeBtn.Text = prestigeText;
-            PrestigeBtn.IsEnabled = false;
-            CounterBtn.Text = "Prestiged, click reset.";
+            var prestigeText = $"{_cityCount} {cityText} created";
+            CityBtn.Text = prestigeText;
+            CityBtn.IsEnabled = false;
 
-            SemanticScreenReader.Announce(PrestigeBtn.Text);
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            if (_cityCount >= 3)
+            {
+                CountryBtn.IsVisible = true;
+                CountryBtn.IsEnabled = true;
+            }
+
+            PersonBtn.Text = "Click to add some people.";
+
+            SemanticScreenReader.Announce(PersonBtn.Text);
+            SemanticScreenReader.Announce(CityBtn.Text);
+        }
+
+        private void OnCountryCounterClicked(object sender, EventArgs e)
+        {
+            _countryCount++;
+
+            _peopleCount = 0;
+            _cityCount = 0;
+
+            var countryEnding = "Country";
+
+            if (_countryCount != 1)
+            {
+                countryEnding = "Countries";
+            }
+
+            var countryText = $"{_countryCount} {countryEnding} created";
+
+            CityBtn.Text = countryText;
+            CityBtn.IsEnabled = false;
+
+            CountryBtn.Text = countryText;
+            CountryBtn.IsEnabled = false;
+
+            PersonBtn.Text = "Click to add some people.";
+            CityBtn.Text = "Click to add a city.";
+
+            SemanticScreenReader.Announce(PersonBtn.Text);
+            SemanticScreenReader.Announce(CityBtn.Text);
+            SemanticScreenReader.Announce(CountryBtn.Text);
         }
     }
 
