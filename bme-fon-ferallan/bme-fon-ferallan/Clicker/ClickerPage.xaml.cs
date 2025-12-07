@@ -16,6 +16,9 @@
 
         private void OnPersonCounterClicked(object sender, EventArgs e)
         {
+            var button = (Button)sender;
+            var buttonName = button.AutomationId;
+
             _peopleCount++;
 
             var personText = "people";
@@ -27,7 +30,6 @@
 
             if (_peopleCount >= 20)
             {
-                CityBtn.IsVisible = true;
                 CityBtn.IsEnabled = true;
             }
             var counterText = $"{_peopleCount} {personText} created";
@@ -56,7 +58,6 @@
 
             if (_cityCount >= 3)
             {
-                CountryBtn.IsVisible = true;
                 CountryBtn.IsEnabled = true;
             }
 
@@ -64,6 +65,7 @@
 
             SemanticScreenReader.Announce(PersonBtn.Text);
             SemanticScreenReader.Announce(CityBtn.Text);
+            CountryBtn.IsVisible = true;
         }
 
         private void OnCountryCounterClicked(object sender, EventArgs e)

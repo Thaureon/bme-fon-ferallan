@@ -3,24 +3,21 @@
     x:Class="bme_fon_ferallan.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:bme_fon_ferallan"
+    xmlns:navigation="clr-namespace:bme_fon_ferallan.Navigation"
     xmlns:clicker="clr-namespace:bme_fon_ferallan.Clicker"
     xmlns:api="clr-namespace:bme_fon_ferallan.API"
-    Shell.FlyoutBehavior="Flyout"
+    xmlns:bmeFonFerallan="clr-namespace:bme_fon_ferallan"
     Title="bme_fon_ferallan">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
-    <ShellContent
-        Title="Clicker"
-        ContentTemplate="{DataTemplate clicker:ClickerPage}"
-        Route="ClickerPage" />
-
-    <ShellContent
-        Title="API Test"
-        ContentTemplate="{DataTemplate api:ApiPage}"
-        Route="ApiPage" />
+    <TabBar Route="tabs">
+        <Tab Title="Main" Route="MainPage">
+            <ShellContent ContentTemplate="{DataTemplate bmeFonFerallan:MainPage}" />
+        </Tab>
+        <Tab Title="Clicker" Route="ClickerPage">
+            <ShellContent ContentTemplate="{DataTemplate clicker:ClickerPage}" />
+        </Tab>
+        <Tab Title="API" Route="ApiPage">
+            <ShellContent ContentTemplate="{DataTemplate api:ApiPage}" />
+        </Tab>
+    </TabBar>
 </Shell>
