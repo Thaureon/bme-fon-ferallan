@@ -3,15 +3,15 @@
     x:Class="bme_fon_ferallan.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:navigation="clr-namespace:bme_fon_ferallan.Navigation"
     xmlns:clicker="clr-namespace:bme_fon_ferallan.Clicker"
     xmlns:api="clr-namespace:bme_fon_ferallan.API"
     xmlns:bmeFonFerallan="clr-namespace:bme_fon_ferallan"
     Title="bme_fon_ferallan">
 
     <TabBar Route="tabs">
-        <Tab Title="Main" Route="MainPage">
-            <ShellContent ContentTemplate="{DataTemplate bmeFonFerallan:MainPage}" />
+        <Tab Title="Main">
+            <ShellContent Title="Main" Route="MainPage" ContentTemplate="{DataTemplate bmeFonFerallan:MainPage}" />
+            <ShellContent Title="Clicker" Route="ClickerPage" ContentTemplate="{DataTemplate clicker:ClickerPage}" />
         </Tab>
         <Tab Title="Clicker" Route="ClickerPage">
             <ShellContent ContentTemplate="{DataTemplate clicker:ClickerPage}" />

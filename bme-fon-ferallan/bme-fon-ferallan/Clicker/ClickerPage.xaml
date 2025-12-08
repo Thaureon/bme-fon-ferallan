@@ -26,29 +26,52 @@
                 controls:SemanticProperties.HeadingLevel="Level2"
                 controls:SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
+            <controls:Label
+                x:Name="PersonLabel"
+                Text="0 people exist"
+                controls:SemanticProperties.Hint="Counts the number of people that exist" />
+
             <controls:Button
                 x:Name="PersonBtn"
                 Text="Create some people" 
-                controls:SemanticProperties.Hint="Counts the number of people you make"
+                controls:SemanticProperties.Hint="Adds a new person"
                 Clicked="OnPersonCounterClicked"
                 HorizontalOptions="Fill" />
+
+            <controls:Label
+                x:Name="CityLabel"
+                Text="0 cities created"
+                controls:SemanticProperties.Hint="Counts the number of cities created" />
 
             <controls:Button
                 x:Name="CityBtn"
                 Text="Build some cities"
-                controls:SemanticProperties.Hint="Counts the number of cities you make"
+                controls:SemanticProperties.Hint="Adds a new city"
                 Clicked="OnCityCounterClicked"
-                IsVisible="true"
-                IsEnabled="false"
                 HorizontalOptions="Fill" />
+
+            <controls:Label
+                x:Name="CountryLabel"
+                Text="0 countries created"
+                controls:SemanticProperties.Hint="Counts the number of countries created" />
 
             <controls:Button
                 x:Name="CountryBtn"
                 Text="Build some countries"
-                controls:SemanticProperties.Hint="Counts the number of countries you make"
+                controls:SemanticProperties.Hint="Adds a new country"
                 Clicked="OnCountryCounterClicked"
-                IsVisible="false"
-                IsEnabled="false"
+                HorizontalOptions="Fill" />
+
+            <controls:Label
+                x:Name="PlanetLabel"
+                Text="0 planets created"
+                controls:SemanticProperties.Hint="Counts the number of planets created" />
+
+            <controls:Button
+                x:Name="PlanetBtn"
+                Text="Build some countries"
+                controls:SemanticProperties.Hint="Adds a new planet"
+                Clicked="OnPlanetCounterClicked"
                 HorizontalOptions="Fill" />
         </controls:VerticalStackLayout>
     </controls:ScrollView>

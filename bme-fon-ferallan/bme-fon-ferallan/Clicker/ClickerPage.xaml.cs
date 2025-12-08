@@ -5,13 +5,103 @@
         private int _peopleCount;
         private int _cityCount;
         private int _countryCount;
+        private int _planetCount;
 
         public ClickerPage()
         {
             InitializeComponent();
+            SetupClickerPage();
+        }
+
+        private void SetupClickerPage()
+        {
             _peopleCount = 0;
             _cityCount = 0;
             _countryCount = 0;
+            _planetCount = 0;
+
+            CityBtn.IsEnabled = false;
+
+            CountryBtn.IsEnabled = false;
+            CountryBtn.IsVisible = false;
+            CountryLabel.IsVisible = false;
+
+            PlanetBtn.IsEnabled = false;
+            PlanetBtn.IsVisible = false;
+            PlanetLabel.IsVisible = false;
+        }
+
+        private void UpdateTierText(string tierName)
+        {
+            var announcementText = "";
+            switch (tierName)
+            {
+                case "Person":
+                    var personText = _peopleCount == 1 ? "person" : "people";
+                    PersonLabel.Text = $"{_peopleCount} {personText} created";
+                    announcementText = PersonLabel.Text;
+                    break;
+                case "City":
+                    var cityText = _cityCount == 1 ? "city" : "cities";
+                    CityLabel.Text = $"{_cityCount} {cityText} created";
+                    announcementText = CityLabel.Text;
+                    break;
+                case "Country":
+                    var countryText = _countryCount == 1 ? "country" : "countries";
+                    CountryLabel.Text = $"{_countryCount} {countryText} created";
+                    announcementText = CountryLabel.Text;
+                    break;
+                case "Planet":
+                    var planetText = _planetCount == 1 ? "planet" : "planets";
+                    PlanetLabel.Text = $"{_planetCount} {planetText} created";
+                    announcementText = PlanetLabel.Text;
+                    break;
+            }
+            SemanticScreenReader.Announce(announcementText);
+        }
+
+        private void ResetTier(string tierName)
+        {
+            switch (tierName)
+            {
+                case "Person":
+                    _peopleCount = 0;
+                    CityBtn.IsEnabled = false;
+                    UpdateTierText(tierName);
+                    break;
+                case "City":
+                    _cityCount = 0;
+                    CountryBtn.IsEnabled = false;
+                    UpdateTierText(tierName);
+                    break;
+                case "Country":
+                    _countryCount = 0;
+                    PlanetBtn.IsEnabled = false;
+                    UpdateTierText(tierName);
+                    break;
+                case "Planet":
+                    _planetCount = 0;
+                    UpdateTierText(tierName);
+                    break;
+            }
+        }
+
+        private void UnlockTier(string tierName)
+        {
+            switch (tierName)
+            {
+                case "Person":
+                case "City":
+                    break;
+                case "Country":
+                    CountryBtn.IsVisible = true;
+                    CountryLabel.IsVisible = true;
+                    break;
+                case "Planet":
+                    PlanetBtn.IsVisible = true;
+                    PlanetLabel.IsVisible = true;
+                    break;
+            }
         }
 
         private void OnPersonCounterClicked(object sender, EventArgs e)
@@ -21,81 +111,51 @@
 
             _peopleCount++;
 
-            var personText = "people";
-
-            if (_peopleCount == 1)
-            {
-                personText = "person";
-            }
-
             if (_peopleCount >= 20)
             {
                 CityBtn.IsEnabled = true;
             }
-            var counterText = $"{_peopleCount} {personText} created";
 
-            PersonBtn.Text = counterText;
-
-            SemanticScreenReader.Announce(PersonBtn.Text);
+            UpdateTierText("Person");
         }
 
         private void OnCityCounterClicked(object sender, EventArgs e)
         {
             _cityCount++;
 
-            _peopleCount = 0;
-
-            var cityText = "City";
-
-            if (_cityCount != 1)
-            {
-                cityText = "Cities";
-            }
-
-            var prestigeText = $"{_cityCount} {cityText} created";
-            CityBtn.Text = prestigeText;
-            CityBtn.IsEnabled = false;
-
             if (_cityCount >= 3)
             {
                 CountryBtn.IsEnabled = true;
             }
 
-            PersonBtn.Text = "Click to add some people.";
-
-            SemanticScreenReader.Announce(PersonBtn.Text);
-            SemanticScreenReader.Announce(CityBtn.Text);
-            CountryBtn.IsVisible = true;
+            ResetTier("Person");
+            UpdateTierText("City");
+            UnlockTier("Country");
         }
 
         private void OnCountryCounterClicked(object sender, EventArgs e)
         {
             _countryCount++;
 
-            _peopleCount = 0;
-            _cityCount = 0;
-
-            var countryEnding = "Country";
-
-            if (_countryCount != 1)
+            if (_countryCount >= 3)
             {
-                countryEnding = "Countries";
+                PlanetBtn.IsEnabled = true;
             }
 
-            var countryText = $"{_countryCount} {countryEnding} created";
+            ResetTier("Person");
+            ResetTier("City");
+            UpdateTierText("Country");
+            UnlockTier("Planet");
+        }
 
-            CityBtn.Text = countryText;
-            CityBtn.IsEnabled = false;
+        private void OnPlanetCounterClicked(object sender, EventArgs e)
+        {
+            _planetCount++;
 
-            CountryBtn.Text = countryText;
-            CountryBtn.IsEnabled = false;
-
-            PersonBtn.Text = "Click to add some people.";
-            CityBtn.Text = "Click to add a city.";
-
-            SemanticScreenReader.Announce(PersonBtn.Text);
-            SemanticScreenReader.Announce(CityBtn.Text);
-            SemanticScreenReader.Announce(CountryBtn.Text);
+            ResetTier("Person");
+            ResetTier("City");
+            ResetTier("Country");
+            UpdateTierText("Planet");
         }
     }
 
