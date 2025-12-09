@@ -6,6 +6,7 @@
         private int _cityCount;
         private int _countryCount;
         private int _planetCount;
+        private int _solarSystemCount;
 
         public ClickerPage()
         {
@@ -19,6 +20,7 @@
             _cityCount = 0;
             _countryCount = 0;
             _planetCount = 0;
+            _solarSystemCount = 0;
 
             CityBtn.IsEnabled = false;
 
@@ -29,6 +31,10 @@
             PlanetBtn.IsEnabled = false;
             PlanetBtn.IsVisible = false;
             PlanetLabel.IsVisible = false;
+
+            SolarSystemBtn.IsEnabled = false;
+            SolarSystemBtn.IsVisible = false;
+            SolarSystemLabel.IsVisible = false;
         }
 
         private void UpdateTierText(string tierName)
@@ -56,6 +62,11 @@
                     PlanetLabel.Text = $"{_planetCount} {planetText} created";
                     announcementText = PlanetLabel.Text;
                     break;
+                case "SolarSystem":
+                    var solarSystemText = _solarSystemCount == 1 ? "solar system" : "solar systems";
+                    SolarSystemLabel.Text = $"{_solarSystemCount} {solarSystemText} created";
+                    announcementText = SolarSystemLabel.Text;
+                    break;
             }
             SemanticScreenReader.Announce(announcementText);
         }
@@ -81,6 +92,11 @@
                     break;
                 case "Planet":
                     _planetCount = 0;
+                    SolarSystemBtn.IsEnabled = false;
+                    UpdateTierText(tierName);
+                    break;
+                case "SolarSystem":
+                    _solarSystemCount = 0;
                     UpdateTierText(tierName);
                     break;
             }
@@ -100,6 +116,10 @@
                 case "Planet":
                     PlanetBtn.IsVisible = true;
                     PlanetLabel.IsVisible = true;
+                    break;
+                case "SolarSystem":
+                    SolarSystemBtn.IsVisible = true;
+                    SolarSystemLabel.IsVisible = true;
                     break;
             }
         }
@@ -152,11 +172,26 @@
         {
             _planetCount++;
 
+            if (_planetCount >= 3)
+            {
+                SolarSystemBtn.IsEnabled = true;
+            }
+
             ResetTier("Person");
             ResetTier("City");
             ResetTier("Country");
             UpdateTierText("Planet");
         }
-    }
 
+        private void OnSolarSystemCounterClicked(object sender, EventArgs e)
+        {
+            _solarSystemCount++;
+
+            ResetTier("Person");
+            ResetTier("City");
+            ResetTier("Country");
+            ResetTier("Planet");
+            UpdateTierText("SolarSystem");
+        }
+    }
 }

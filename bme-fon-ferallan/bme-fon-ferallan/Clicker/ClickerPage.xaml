@@ -33,7 +33,7 @@
 
             <controls:Button
                 x:Name="PersonBtn"
-                Text="Create some people" 
+                Text="Make a person" 
                 controls:SemanticProperties.Hint="Adds a new person"
                 Clicked="OnPersonCounterClicked"
                 HorizontalOptions="Fill" />
@@ -45,7 +45,7 @@
 
             <controls:Button
                 x:Name="CityBtn"
-                Text="Build some cities"
+                Text="Build a city"
                 controls:SemanticProperties.Hint="Adds a new city"
                 Clicked="OnCityCounterClicked"
                 HorizontalOptions="Fill" />
@@ -57,7 +57,7 @@
 
             <controls:Button
                 x:Name="CountryBtn"
-                Text="Build some countries"
+                Text="Build a country"
                 controls:SemanticProperties.Hint="Adds a new country"
                 Clicked="OnCountryCounterClicked"
                 HorizontalOptions="Fill" />
@@ -69,9 +69,21 @@
 
             <controls:Button
                 x:Name="PlanetBtn"
-                Text="Build some countries"
+                Text="Build a planet"
                 controls:SemanticProperties.Hint="Adds a new planet"
                 Clicked="OnPlanetCounterClicked"
+                HorizontalOptions="Fill" />
+
+            <controls:Label
+                x:Name="SolarSystemLabel"
+                Text="0 solar systems created"
+                controls:SemanticProperties.Hint="Counts the number of solar systems created" />
+
+            <controls:Button
+                x:Name="SolarSystemBtn"
+                Text="Build a solar systems"
+                controls:SemanticProperties.Hint="Adds a new solar system"
+                Clicked="OnSolarSystemCounterClicked"
                 HorizontalOptions="Fill" />
         </controls:VerticalStackLayout>
     </controls:ScrollView>
