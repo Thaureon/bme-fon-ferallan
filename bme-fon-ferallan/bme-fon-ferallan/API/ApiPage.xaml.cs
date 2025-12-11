@@ -2,29 +2,23 @@
 {
     public partial class ApiPage : ContentPage
     {
-        private readonly IGasPullerAPI _gasPullerApi;
+        private readonly ApiPageViewModel _bindingContext;
 
-        public ApiPage(IGasPullerAPI gasPullerApi)
+        public ApiPage(ApiPageViewModel viewModel)
         {
             InitializeComponent();
-            _gasPullerApi = gasPullerApi;
+            _bindingContext = viewModel;
         }
 
-        private void OnStateUsaPriceCheck(object sender, EventArgs e)
+        private async void OnStateUsaPriceCheck(object sender, EventArgs e)
         {
-            if (_gasPullerApi != null)
-            {
-                var input = StateCheckInput.Text;
-                var statePriceCheck = _gasPullerApi.GetStateUsaPrice(input);
-            }
+            var input = StateCheckInput.Text;
+            var statePriceCheck = await _bindingContext.GetStateUsaPrice(input);
         }
 
-        private void OnCityPriceCheck(object sender, EventArgs e)
+        private async void OnCityPriceCheck(object sender, EventArgs e)
         {
-            if (_gasPullerApi != null)
-            {
-                var statePriceCheck = _gasPullerApi.GetStateUsaPrice("TX");
-            }
+            var statePriceCheck = await _bindingContext.GetFromCity("dallas", "gasoline");
         }
     }
 }
