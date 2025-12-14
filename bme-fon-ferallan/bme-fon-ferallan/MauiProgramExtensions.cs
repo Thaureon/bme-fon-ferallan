@@ -1,6 +1,9 @@
 ﻿using bme_fon_ferallan.API;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RestEase.HttpClientFactory;
+using System.Reflection;
 
 namespace bme_fon_ferallan
 {
@@ -16,7 +19,24 @@ namespace bme_fon_ferallan
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddRestEaseClient<IGasPullerAPI>("https://api.collectapi.com/gasPrice/");
+            var assembly = Assembly.GetExecutingAssembly();
+
+            var resourcePath = $"{assembly.GetName().Name.Replace('-', '_')}.Configs.appsettings.json";
+
+            using var stream = assembly.GetManifestResourceStream(resourcePath);
+
+            if (stream != null)
+            {
+                var config = new ConfigurationBuilder()
+                    .AddJsonStream(stream)
+                    .Build();
+
+                builder.Configuration.AddConfiguration(config);
+            }
+
+            var gasPullerUrl = builder.Configuration["GasPullerApi:Url"];
+
+            builder.Services.AddRestEaseClient<IGasPullerAPI>(gasPullerUrl);
 
             builder.Services.AddSingleton<ApiPageViewModel>();
 #if DEBUG

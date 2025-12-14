@@ -7,14 +7,14 @@ namespace bme_fon_ferallan.API
     {
         public async Task<StateUsaPriceModel> GetStateUsaPrice(string state)
         {
-            var token = "";
+            var token = await SecureStorage.Default.GetAsync("auth_token");
             gasPullerApi.Authorization = new AuthenticationHeaderValue("Basic", token);
             return await gasPullerApi.GetStateUsaPrice(state);
         }
 
         public async Task<FromCityModel> GetFromCity(string city, string type)
         {
-            var token = "";
+            var token = await SecureStorage.Default.GetAsync("auth_token");
             gasPullerApi.Authorization = new AuthenticationHeaderValue("Basic", token);
             return await gasPullerApi.GetFromCity(city, type);
         }
