@@ -11,17 +11,43 @@
         public ClickerPage()
         {
             InitializeComponent();
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            LoadData();
             SetupClickerPage();
+        }
+
+        protected override async void OnDisappearing()
+        {
+            base.OnDisappearing();
+
+            SaveData();
+        }
+
+        private void LoadData()
+        {
+            _peopleCount = Preferences.Get("PeopleCount", 0);
+            _cityCount = Preferences.Get("CityCount", 0);
+            _countryCount = Preferences.Get("CountryCount", 0);
+            _planetCount = Preferences.Get("PlanetCount", 0);
+            _solarSystemCount = Preferences.Get("SolarSystemCount", 0);
+        }
+
+        private void SaveData()
+        {
+            Preferences.Set("PeopleCount", _peopleCount);
+            Preferences.Set("CityCount", _cityCount);
+            Preferences.Set("CountryCount", _countryCount);
+            Preferences.Set("PlanetCount", _planetCount);
+            Preferences.Set("SolarSystemCount", _solarSystemCount);
         }
 
         private void SetupClickerPage()
         {
-            _peopleCount = 0;
-            _cityCount = 0;
-            _countryCount = 0;
-            _planetCount = 0;
-            _solarSystemCount = 0;
-
             CityBtn.IsEnabled = false;
 
             CountryBtn.IsEnabled = false;
