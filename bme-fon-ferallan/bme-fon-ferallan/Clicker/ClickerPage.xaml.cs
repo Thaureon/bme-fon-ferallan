@@ -1,4 +1,6 @@
-﻿namespace bme_fon_ferallan.Clicker
+﻿using bme_fon_ferallan.Clicker.Tiers;
+
+namespace bme_fon_ferallan.Clicker
 {
     public partial class ClickerPage : ContentPage
     {
@@ -7,6 +9,8 @@
         private int _countryCount;
         private int _planetCount;
         private int _solarSystemCount;
+
+        private Dictionary<Tier, ITier> _tiers = new Dictionary<Tier, ITier>();
 
         public ClickerPage()
         {
@@ -17,8 +21,8 @@
         {
             base.OnAppearing();
 
-            LoadData();
             SetupClickerPage();
+            LoadData();
         }
 
         protected override async void OnDisappearing()
@@ -28,39 +32,29 @@
             SaveData();
         }
 
+        private void SetupClickerPage()
+        {
+            _tiers.Add(Tier.People, new BaseTier(PersonLabel, PersonBtn, TierNameConstants.PeopleTier, Tier.People));
+            _tiers.Add(Tier.City, new BaseTier(CityLabel, CityBtn, TierNameConstants.CityTier, Tier.City));
+            _tiers.Add(Tier.Country, new BaseTier(CountryLabel, CountryBtn, TierNameConstants.CountryTier, Tier.Country));
+            _tiers.Add(Tier.Planet, new BaseTier(PlanetLabel, PlanetBtn, TierNameConstants.PlanetTier, Tier.Planet));
+            _tiers.Add(Tier.SolarSystem, new BaseTier(SolarSystemLabel, SolarSystemBtn, TierNameConstants.SolarSystemTier, Tier.SolarSystem));
+        }
+
         private void LoadData()
         {
-            _peopleCount = Preferences.Get("PeopleCount", 0);
-            _cityCount = Preferences.Get("CityCount", 0);
-            _countryCount = Preferences.Get("CountryCount", 0);
-            _planetCount = Preferences.Get("PlanetCount", 0);
-            _solarSystemCount = Preferences.Get("SolarSystemCount", 0);
+            foreach (var tier in _tiers)
+            {
+                tier.Value.LoadData();
+            }
         }
 
         private void SaveData()
         {
-            Preferences.Set("PeopleCount", _peopleCount);
-            Preferences.Set("CityCount", _cityCount);
-            Preferences.Set("CountryCount", _countryCount);
-            Preferences.Set("PlanetCount", _planetCount);
-            Preferences.Set("SolarSystemCount", _solarSystemCount);
-        }
-
-        private void SetupClickerPage()
-        {
-            CityBtn.IsEnabled = false;
-
-            CountryBtn.IsEnabled = false;
-            CountryBtn.IsVisible = false;
-            CountryLabel.IsVisible = false;
-
-            PlanetBtn.IsEnabled = false;
-            PlanetBtn.IsVisible = false;
-            PlanetLabel.IsVisible = false;
-
-            SolarSystemBtn.IsEnabled = false;
-            SolarSystemBtn.IsVisible = false;
-            SolarSystemLabel.IsVisible = false;
+            foreach (var tier in _tiers)
+            {
+                tier.Value.SaveData();
+            }
         }
 
         private void UpdateTierText(string tierName)
