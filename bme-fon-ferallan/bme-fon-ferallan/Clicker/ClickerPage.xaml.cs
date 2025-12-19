@@ -1,20 +1,21 @@
 ﻿using bme_fon_ferallan.Clicker.Tiers;
 
+using CommunityToolkit.Maui.Storage;
+
 namespace bme_fon_ferallan.Clicker
 {
     public partial class ClickerPage : ContentPage
     {
-        private int _peopleCount;
-        private int _cityCount;
-        private int _countryCount;
-        private int _planetCount;
-        private int _solarSystemCount;
+        private readonly IFileSaver _fileSaver;
+        private readonly IFilePicker _filePicker;
 
-        private Dictionary<Tier, ITier> _tiers = new Dictionary<Tier, ITier>();
+        private readonly Dictionary<Tier, IBaseTier> _tiers = new Dictionary<Tier, IBaseTier>();
 
-        public ClickerPage()
+        public ClickerPage(IFileSaver fileSaver, IFilePicker filePicker)
         {
             InitializeComponent();
+            _fileSaver = fileSaver;
+            _filePicker = filePicker;
         }
 
         protected override async void OnAppearing()
@@ -51,6 +52,7 @@ namespace bme_fon_ferallan.Clicker
 
         private void SaveData()
         {
+            //_fileSaver.SaveAsync();
             foreach (var tier in _tiers)
             {
                 tier.Value.SaveData();
@@ -63,28 +65,28 @@ namespace bme_fon_ferallan.Clicker
             switch (tierName)
             {
                 case "Person":
-                    var personText = _peopleCount == 1 ? "person" : "people";
-                    PersonLabel.Text = $"{_peopleCount} {personText} created";
+                    var personText = _tiers[Tier.People].GetCount() == 1 ? "person" : "people";
+                    PersonLabel.Text = $"{_tiers[Tier.People].GetCount()} {personText} created";
                     announcementText = PersonLabel.Text;
                     break;
                 case "City":
-                    var cityText = _cityCount == 1 ? "city" : "cities";
-                    CityLabel.Text = $"{_cityCount} {cityText} created";
+                    var cityText = _tiers[Tier.City].GetCount() == 1 ? "city" : "cities";
+                    CityLabel.Text = $"{_tiers[Tier.City].GetCount()} {cityText} created";
                     announcementText = CityLabel.Text;
                     break;
                 case "Country":
-                    var countryText = _countryCount == 1 ? "country" : "countries";
-                    CountryLabel.Text = $"{_countryCount} {countryText} created";
+                    var countryText = _tiers[Tier.Country].GetCount() == 1 ? "country" : "countries";
+                    CountryLabel.Text = $"{_tiers[Tier.Country].GetCount()} {countryText} created";
                     announcementText = CountryLabel.Text;
                     break;
                 case "Planet":
-                    var planetText = _planetCount == 1 ? "planet" : "planets";
-                    PlanetLabel.Text = $"{_planetCount} {planetText} created";
+                    var planetText = _tiers[Tier.Planet].GetCount() == 1 ? "planet" : "planets";
+                    PlanetLabel.Text = $"{_tiers[Tier.Planet].GetCount()} {planetText} created";
                     announcementText = PlanetLabel.Text;
                     break;
                 case "SolarSystem":
-                    var solarSystemText = _solarSystemCount == 1 ? "solar system" : "solar systems";
-                    SolarSystemLabel.Text = $"{_solarSystemCount} {solarSystemText} created";
+                    var solarSystemText = _tiers[Tier.SolarSystem].GetCount() == 1 ? "solar system" : "solar systems";
+                    SolarSystemLabel.Text = $"{_tiers[Tier.SolarSystem].GetCount()} {solarSystemText} created";
                     announcementText = SolarSystemLabel.Text;
                     break;
             }
@@ -96,27 +98,27 @@ namespace bme_fon_ferallan.Clicker
             switch (tierName)
             {
                 case "Person":
-                    _peopleCount = 0;
+                    _tiers[Tier.People].SetCount(0);
                     CityBtn.IsEnabled = false;
                     UpdateTierText(tierName);
                     break;
                 case "City":
-                    _cityCount = 0;
+                    _tiers[Tier.City].SetCount(0);
                     CountryBtn.IsEnabled = false;
                     UpdateTierText(tierName);
                     break;
                 case "Country":
-                    _countryCount = 0;
+                    _tiers[Tier.Country].SetCount(0);
                     PlanetBtn.IsEnabled = false;
                     UpdateTierText(tierName);
                     break;
                 case "Planet":
-                    _planetCount = 0;
+                    _tiers[Tier.Planet].SetCount(0);
                     SolarSystemBtn.IsEnabled = false;
                     UpdateTierText(tierName);
                     break;
                 case "SolarSystem":
-                    _solarSystemCount = 0;
+                    _tiers[Tier.SolarSystem].SetCount(0);
                     UpdateTierText(tierName);
                     break;
             }
@@ -149,9 +151,12 @@ namespace bme_fon_ferallan.Clicker
             var button = (Button)sender;
             var buttonName = button.AutomationId;
 
-            _peopleCount++;
+            var tier = Tier.People;
+            var newCount = _tiers[tier].GetCount() + 1;
 
-            if (_peopleCount >= 20)
+            _tiers[tier].SetCount(newCount);
+
+            if (newCount >= 20)
             {
                 CityBtn.IsEnabled = true;
             }
@@ -161,9 +166,12 @@ namespace bme_fon_ferallan.Clicker
 
         private void OnCityCounterClicked(object sender, EventArgs e)
         {
-            _cityCount++;
+            var tier = Tier.City;
+            var newCount = _tiers[tier].GetCount() + 1;
 
-            if (_cityCount >= 3)
+            _tiers[tier].SetCount(newCount);
+
+            if (newCount >= 3)
             {
                 CountryBtn.IsEnabled = true;
             }
@@ -175,9 +183,12 @@ namespace bme_fon_ferallan.Clicker
 
         private void OnCountryCounterClicked(object sender, EventArgs e)
         {
-            _countryCount++;
+            var tier = Tier.Country;
+            var newCount = _tiers[tier].GetCount() + 1;
 
-            if (_countryCount >= 3)
+            _tiers[tier].SetCount(newCount);
+
+            if (newCount >= 3)
             {
                 PlanetBtn.IsEnabled = true;
             }
@@ -190,9 +201,12 @@ namespace bme_fon_ferallan.Clicker
 
         private void OnPlanetCounterClicked(object sender, EventArgs e)
         {
-            _planetCount++;
+            var tier = Tier.Planet;
+            var newCount = _tiers[tier].GetCount() + 1;
 
-            if (_planetCount >= 3)
+            _tiers[tier].SetCount(newCount);
+
+            if (newCount >= 3)
             {
                 SolarSystemBtn.IsEnabled = true;
             }
@@ -205,7 +219,10 @@ namespace bme_fon_ferallan.Clicker
 
         private void OnSolarSystemCounterClicked(object sender, EventArgs e)
         {
-            _solarSystemCount++;
+            var tier = Tier.SolarSystem;
+            var newCount = _tiers[tier].GetCount() + 1;
+
+            _tiers[tier].SetCount(newCount);
 
             ResetTier("Person");
             ResetTier("City");

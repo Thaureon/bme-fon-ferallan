@@ -1,6 +1,6 @@
 ﻿namespace bme_fon_ferallan.Clicker.Tiers
 {
-    public class BaseBaseTier : IBaseTier
+    public class BaseTier : IBaseTier
     {
         private Label _label;
         private Button _button;
@@ -9,7 +9,7 @@
 
         private int _count;
 
-        public BaseBaseTier(Label label, Button button, string tierName, Tier currentTier)
+        public BaseTier(Label label, Button button, string tierName, Tier currentTier)
         {
             _label = label;
             _button = button;
@@ -58,6 +58,16 @@
         {
             _label.IsVisible = false;
             _button.IsVisible = false;
+        }
+
+        public int GetCount()
+        {
+            return _count;
+        }
+
+        public void SetCount(int newCount)
+        {
+            _count = newCount;
         }
     }
 }

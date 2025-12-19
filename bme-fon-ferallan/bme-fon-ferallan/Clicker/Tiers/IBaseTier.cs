@@ -8,5 +8,8 @@
         public void Disable();
         public void Show();
         public void Hide();
+
+        public int GetCount();
+        public void SetCount(int newCount);
     }
 }
