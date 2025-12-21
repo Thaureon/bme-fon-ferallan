@@ -22,14 +22,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Clicker\NewFolder\**" />
-	  <EmbeddedResource Remove="Clicker\NewFolder\**" />
-	  <MauiCss Remove="Clicker\NewFolder\**" />
-	  <MauiXaml Remove="Clicker\NewFolder\**" />
-	  <None Remove="Clicker\NewFolder\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Remove="Configs\appsettings.json" />
 	</ItemGroup>
 

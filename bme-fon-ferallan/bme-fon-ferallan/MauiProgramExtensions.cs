@@ -3,9 +3,7 @@ using bme_fon_ferallan.Clicker;
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Storage;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Storage;
 using RestEase.HttpClientFactory;
 using System.Reflection;
 
@@ -44,10 +42,6 @@ namespace bme_fon_ferallan
             builder.Services.AddRestEaseClient<IGasPullerAPI>(gasPullerUrl);
 
             builder.Services.AddSingleton<ApiPageViewModel>();
-
-
-            builder.Services.AddSingleton<IFileSaver>(FileSaver.Default);
-            builder.Services.AddSingleton<IFilePicker>(FilePicker.Default);
 
             builder.Services.AddTransient<ClickerPage>();
 

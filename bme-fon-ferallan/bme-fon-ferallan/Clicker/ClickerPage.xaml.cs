@@ -1,21 +1,22 @@
-﻿using bme_fon_ferallan.Clicker.Tiers;
+﻿using System.Text.Json;
 
-using CommunityToolkit.Maui.Storage;
+using bme_fon_ferallan.Clicker.SaveData;
+using bme_fon_ferallan.Clicker.Tiers;
 
 namespace bme_fon_ferallan.Clicker
 {
     public partial class ClickerPage : ContentPage
     {
-        private readonly IFileSaver _fileSaver;
-        private readonly IFilePicker _filePicker;
+        private GameSaveInfo _gameSaveInfo;
+
+        private const string FileName = "ClickerSave";
+        private string _savePath = Path.Combine(FileSystem.AppDataDirectory, $"{FileName}.json");
 
         private readonly Dictionary<Tier, IBaseTier> _tiers = new Dictionary<Tier, IBaseTier>();
 
-        public ClickerPage(IFileSaver fileSaver, IFilePicker filePicker)
+        public ClickerPage()
         {
             InitializeComponent();
-            _fileSaver = fileSaver;
-            _filePicker = filePicker;
         }
 
         protected override async void OnAppearing()
@@ -23,14 +24,14 @@ namespace bme_fon_ferallan.Clicker
             base.OnAppearing();
 
             SetupClickerPage();
-            LoadData();
+            await LoadData();
         }
 
         protected override async void OnDisappearing()
         {
             base.OnDisappearing();
 
-            SaveData();
+            await SaveData();
         }
 
         private void SetupClickerPage()
@@ -42,21 +43,35 @@ namespace bme_fon_ferallan.Clicker
             _tiers.Add(Tier.SolarSystem, new BaseTier(SolarSystemLabel, SolarSystemBtn, TierNameConstants.SolarSystemTier, Tier.SolarSystem));
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
-            foreach (var tier in _tiers)
-            {
-                tier.Value.LoadData();
-            }
+            _gameSaveInfo = await LoadDataFromFile();
         }
 
-        private void SaveData()
+        private async Task<GameSaveInfo> LoadDataFromFile()
         {
-            //_fileSaver.SaveAsync();
+            var jsonSave = await File.ReadAllTextAsync(_savePath);
+
+            var gameSave = JsonSerializer.Deserialize<GameSaveInfo>(jsonSave);
+
+            return gameSave ?? new GameSaveInfo();
+        }
+
+        private async Task SaveData()
+        {
             foreach (var tier in _tiers)
             {
                 tier.Value.SaveData();
             }
+
+            await SaveDataToFile(_gameSaveInfo);
+        }
+
+        private async Task SaveDataToFile(GameSaveInfo gameSave)
+        {
+            var jsonSave = JsonSerializer.Serialize(gameSave);
+
+            await File.WriteAllTextAsync(_savePath, jsonSave);
         }
 
         private void UpdateTierText(string tierName)
