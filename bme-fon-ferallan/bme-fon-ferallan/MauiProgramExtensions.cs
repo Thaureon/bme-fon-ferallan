@@ -1,7 +1,6 @@
 ﻿using bme_fon_ferallan.API;
 using bme_fon_ferallan.Clicker;
 using CommunityToolkit.Maui;
-using CommunityToolkit.Maui.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RestEase.HttpClientFactory;
