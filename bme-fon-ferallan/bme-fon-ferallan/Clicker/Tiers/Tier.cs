@@ -1,4 +1,5 @@
-﻿using bme_fon_ferallan.Clicker.SaveData;
+﻿using bme_fon_ferallan.Clicker.CustomControls;
+using bme_fon_ferallan.Clicker.SaveData;
 
 namespace bme_fon_ferallan.Clicker.Tiers
 {
@@ -6,10 +7,10 @@ namespace bme_fon_ferallan.Clicker.Tiers
     {
         private TierData _data;
 
-        private Label _label;
-        private Button _button;
+        private CustomLabel _label;
+        private CustomButton _button;
 
-        public Tier(Label label, Button button)
+        public Tier(CustomLabel label, CustomButton button)
         {
             _label = label;
             _button = button;
@@ -37,6 +38,20 @@ namespace bme_fon_ferallan.Clicker.Tiers
                 {
                     Enable();
                 }
+
+                SetText();
+            }
+        }
+
+        public void SaveData(GameSave saveData)
+        {
+            if (saveData.Tiers.ContainsKey(_data.Type))
+            {
+                saveData.Tiers[_data.Type] = _data;
+            }
+            else
+            {
+                saveData.Tiers.Add(_data.Type, _data);
             }
         }
 
@@ -75,6 +90,25 @@ namespace bme_fon_ferallan.Clicker.Tiers
         public void IncrementCount(int increment)
         {
             _data.Count += increment;
+        }
+
+        public void CheckEnable(int requirementCount)
+        {
+            if (_data.Unlocked && _data.RequireCount <= requirementCount)
+            {
+                Enable();
+            }
+        }
+
+        public void CheckUnlock()
+        {
+
+        }
+
+        public void SetText()
+        {
+            _label.Text = _data.TierText;
+            SemanticScreenReader.Announce(_label.Text);
         }
     }
 }

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Microsoft.Maui.Controls;assembly=Microsoft.Maui.Controls"
              xmlns:xaml="clr-namespace:Microsoft.Maui.Controls.Xaml;assembly=Microsoft.Maui.Controls.Xaml"
+             xmlns:customControls="clr-namespace:bme_fon_ferallan.Clicker.CustomControls"
              x:Class="bme_fon_ferallan.Clicker.ClickerPage">
 
     <controls:ScrollView>
@@ -26,64 +27,86 @@
                 controls:SemanticProperties.HeadingLevel="Level2"
                 controls:SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
 
-            <controls:Label
+            <customControls:CustomLabel
                 x:Name="PersonLabel"
                 Text="0 people exist"
+                TierType="People"
                 controls:SemanticProperties.Hint="Counts the number of people that exist" />
 
-            <controls:Button
+            <customControls:CustomButton
                 x:Name="PersonBtn"
                 Text="Make a person" 
                 controls:SemanticProperties.Hint="Adds a new person"
-                Clicked="OnPersonCounterClicked"
+                Clicked="OnClicked"
+                TierType="People"
                 HorizontalOptions="Fill" />
 
-            <controls:Label
+            <customControls:CustomLabel
                 x:Name="CityLabel"
                 Text="0 cities created"
+                TierType="City"
+                IsVisible="False"
                 controls:SemanticProperties.Hint="Counts the number of cities created" />
 
-            <controls:Button
+            <customControls:CustomButton
                 x:Name="CityBtn"
                 Text="Build a city"
                 controls:SemanticProperties.Hint="Adds a new city"
-                Clicked="OnCityCounterClicked"
+                Clicked="OnClicked"
+                TierType="City"
+                IsVisible="False"
+                IsEnabled="False"
                 HorizontalOptions="Fill" />
 
-            <controls:Label
+            <customControls:CustomLabel
                 x:Name="CountryLabel"
                 Text="0 countries created"
+                TierType="Country"
+                IsVisible="False"
                 controls:SemanticProperties.Hint="Counts the number of countries created" />
 
-            <controls:Button
+            <customControls:CustomButton
                 x:Name="CountryBtn"
                 Text="Build a country"
                 controls:SemanticProperties.Hint="Adds a new country"
                 Clicked="OnCountryCounterClicked"
+                TierType="Country"
+                IsVisible="False"
+                IsEnabled="False"
                 HorizontalOptions="Fill" />
 
-            <controls:Label
+            <customControls:CustomLabel
                 x:Name="PlanetLabel"
                 Text="0 planets created"
+                TierType="Planet"
+                IsVisible="False"
                 controls:SemanticProperties.Hint="Counts the number of planets created" />
 
-            <controls:Button
+            <customControls:CustomButton
                 x:Name="PlanetBtn"
                 Text="Build a planet"
                 controls:SemanticProperties.Hint="Adds a new planet"
                 Clicked="OnPlanetCounterClicked"
+                TierType="Planet"
+                IsVisible="False"
+                IsEnabled="False"
                 HorizontalOptions="Fill" />
 
-            <controls:Label
+            <customControls:CustomLabel
                 x:Name="SolarSystemLabel"
                 Text="0 solar systems created"
+                TierType="SolarSystem"
+                IsVisible="False"
                 controls:SemanticProperties.Hint="Counts the number of solar systems created" />
 
-            <controls:Button
+            <customControls:CustomButton
                 x:Name="SolarSystemBtn"
                 Text="Build a solar systems"
                 controls:SemanticProperties.Hint="Adds a new solar system"
                 Clicked="OnSolarSystemCounterClicked"
+                TierType="SolarSystem"
+                IsVisible="False"
+                IsEnabled="False"
                 HorizontalOptions="Fill" />
         </controls:VerticalStackLayout>
     </controls:ScrollView>

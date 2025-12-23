@@ -1,18 +1,20 @@
-﻿using System.Text.Json;
-
+﻿using bme_fon_ferallan.Clicker.CustomControls;
 using bme_fon_ferallan.Clicker.SaveData;
 using bme_fon_ferallan.Clicker.Tiers;
+
+using Newtonsoft.Json;
 
 namespace bme_fon_ferallan.Clicker
 {
     public partial class ClickerPage : ContentPage
     {
-        private GameSave _gameSave;
+        private GameSave _gameSave = new();
 
+        private bool OverwriteFile = true;
         private const string FileName = "ClickerSave";
         private string _savePath = Path.Combine(FileSystem.AppDataDirectory, $"{FileName}.json");
 
-        private readonly Dictionary<TierType, ITier> _tiers = new Dictionary<TierType, ITier>();
+        private readonly Dictionary<TierType, ITier> _tiers = new();
 
         public ClickerPage()
         {
@@ -23,7 +25,11 @@ namespace bme_fon_ferallan.Clicker
         {
             base.OnAppearing();
 
-            ConfigureTiers();
+            if(!_gameSave.Tiers.Any())
+            {
+                ConfigureTiers();
+            }
+
             await LoadData();
         }
 
@@ -38,65 +44,86 @@ namespace bme_fon_ferallan.Clicker
         {
             AddTier(PersonLabel, PersonBtn, TierType.People, new TierData
             {
-                Count = 1,
+                Count = 0,
                 Type = TierType.People,
                 Unlocked = true,
-                RequireType = TierType.None
+                RequireType = TierType.None,
+                SingleText = "person exists",
+                MultipleText = "people exist"
             });
 
             AddTier(CityLabel, CityBtn, TierType.City, new TierData
             {
-                Count = 1,
+                Count = 0,
                 Type = TierType.City,
-                Unlocked = false,
+                Unlocked = true,
                 RequireCount = 20,
-                RequireType = TierType.People
+                RequireType = TierType.People,
+                SingleText = "city exists",
+                MultipleText = "cities exist"
             });
 
             AddTier(CountryLabel, CountryBtn, TierType.Country, new TierData
             {
-                Count = 1,
+                Count = 0,
                 Type = TierType.Country,
                 Unlocked = false,
                 RequireCount = 10,
-                RequireType = TierType.City
+                RequireType = TierType.City,
+                SingleText = "country exists",
+                MultipleText = "countries exist"
             });
 
             AddTier(PlanetLabel, PlanetBtn, TierType.Planet, new TierData
             {
-                Count = 1,
+                Count = 0,
                 Type = TierType.Planet,
                 Unlocked = false,
                 RequireCount = 5,
-                RequireType = TierType.Country
+                RequireType = TierType.Country,
+                SingleText = "planet exists",
+                MultipleText = "planets exist"
             });
 
             AddTier(SolarSystemLabel, SolarSystemBtn, TierType.SolarSystem, new TierData
             {
-                Count = 1,
+                Count = 0,
                 Type = TierType.SolarSystem,
                 Unlocked = false,
                 RequireCount = 3,
-                RequireType = TierType.Planet
+                RequireType = TierType.Planet,
+                SingleText = "solar system exists",
+                MultipleText = "solar systems exist"
             });
         }
 
-        private void AddTier(Label label, Button button, TierType tierType, TierData data)
+        private void AddTier(CustomLabel label, CustomButton button, TierType tierType, TierData data)
         {
             var personTier = new Tier(label, button);
             personTier.InitializeData(data);
-            _tiers.Add(tierType, personTier);
+            _tiers.TryAdd(tierType, personTier);
+            _gameSave.Tiers.Add(tierType, data);
         }
 
         private async Task LoadData()
         {
             var gameSave = await LoadDataFromFile();
 
-            if (gameSave != null)
+            if (!OverwriteFile && gameSave != null && gameSave.Tiers.Any())
             {
                 foreach (var tier in gameSave.Tiers)
                 {
                     _tiers[tier.Key].LoadData(gameSave);
+                }
+
+                _gameSave = gameSave;
+            }
+            else
+            {
+                await SaveData();
+                foreach (var tier in _gameSave.Tiers)
+                {
+                    _tiers[tier.Key].LoadData(_gameSave);
                 }
             }
         }
@@ -107,7 +134,7 @@ namespace bme_fon_ferallan.Clicker
             {
                 var jsonSave = await File.ReadAllTextAsync(_savePath);
 
-                var gameSave = JsonSerializer.Deserialize<GameSave>(jsonSave);
+                var gameSave = JsonConvert.DeserializeObject<GameSave>(jsonSave);
                 return gameSave;
             }
             catch (FileNotFoundException)
@@ -118,106 +145,105 @@ namespace bme_fon_ferallan.Clicker
 
         private async Task SaveData()
         {
+            foreach (var tier in _tiers)
+            {
+                tier.Value.SaveData(_gameSave);
+            }
             await SaveDataToFile(_gameSave);
         }
 
         private async Task SaveDataToFile(GameSave gameSave)
         {
-            var jsonSave = JsonSerializer.Serialize(gameSave);
+            var jsonSave = JsonConvert.SerializeObject(gameSave);
 
             await File.WriteAllTextAsync(_savePath, jsonSave);
         }
 
-        private void UpdateTierText(string tierName)
+        private void UpdateTierText(TierType tier)
         {
-            var announcementText = "";
-            switch (tierName)
-            {
-                case "Person":
-                    var personText = _tiers[TierType.People].GetCount() == 1 ? "person" : "people";
-                    PersonLabel.Text = $"{_tiers[TierType.People].GetCount()} {personText} created";
-                    announcementText = PersonLabel.Text;
-                    break;
-                case "City":
-                    var cityText = _tiers[TierType.City].GetCount() == 1 ? "city" : "cities";
-                    CityLabel.Text = $"{_tiers[TierType.City].GetCount()} {cityText} created";
-                    announcementText = CityLabel.Text;
-                    break;
-                case "Country":
-                    var countryText = _tiers[TierType.Country].GetCount() == 1 ? "country" : "countries";
-                    CountryLabel.Text = $"{_tiers[TierType.Country].GetCount()} {countryText} created";
-                    announcementText = CountryLabel.Text;
-                    break;
-                case "Planet":
-                    var planetText = _tiers[TierType.Planet].GetCount() == 1 ? "planet" : "planets";
-                    PlanetLabel.Text = $"{_tiers[TierType.Planet].GetCount()} {planetText} created";
-                    announcementText = PlanetLabel.Text;
-                    break;
-                case "SolarSystem":
-                    var solarSystemText = _tiers[TierType.SolarSystem].GetCount() == 1 ? "solar system" : "solar systems";
-                    SolarSystemLabel.Text = $"{_tiers[TierType.SolarSystem].GetCount()} {solarSystemText} created";
-                    announcementText = SolarSystemLabel.Text;
-                    break;
-            }
-            SemanticScreenReader.Announce(announcementText);
+            _tiers[tier].SetText();
         }
 
-        private void ResetTier(string tierName)
+        private void ResetTier(TierType tier)
         {
-            switch (tierName)
+            switch (tier)
             {
-                case "Person":
+                case TierType.People:
                     _tiers[TierType.People].SetCount(0);
                     CityBtn.IsEnabled = false;
-                    UpdateTierText(tierName);
+                    UpdateTierText(tier);
                     break;
-                case "City":
+                case TierType.City:
                     _tiers[TierType.City].SetCount(0);
                     CountryBtn.IsEnabled = false;
-                    UpdateTierText(tierName);
+                    UpdateTierText(tier);
                     break;
-                case "Country":
+                case TierType.Country:
                     _tiers[TierType.Country].SetCount(0);
                     PlanetBtn.IsEnabled = false;
-                    UpdateTierText(tierName);
+                    UpdateTierText(tier);
                     break;
-                case "Planet":
+                case TierType.Planet:
                     _tiers[TierType.Planet].SetCount(0);
                     SolarSystemBtn.IsEnabled = false;
-                    UpdateTierText(tierName);
+                    UpdateTierText(tier);
                     break;
-                case "SolarSystem":
+                case TierType.SolarSystem:
                     _tiers[TierType.SolarSystem].SetCount(0);
-                    UpdateTierText(tierName);
+                    UpdateTierText(tier);
                     break;
             }
         }
 
-        private void UnlockTier(string tierName)
+        private void UnlockTier(TierType tier)
         {
-            switch (tierName)
+            switch (tier)
             {
-                case "Person":
-                case "City":
+                case TierType.People:
+                case TierType.City:
                     break;
-                case "Country":
+                case TierType.Country:
                     CountryBtn.IsVisible = true;
                     CountryLabel.IsVisible = true;
                     break;
-                case "Planet":
+                case TierType.Planet:
                     PlanetBtn.IsVisible = true;
                     PlanetLabel.IsVisible = true;
                     break;
-                case "SolarSystem":
+                case TierType.SolarSystem:
                     SolarSystemBtn.IsVisible = true;
                     SolarSystemLabel.IsVisible = true;
                     break;
             }
         }
 
+        private void OnClicked(object sender, EventArgs e)
+        {
+            var button = (CustomButton)sender;
+
+            var tier = button.TierType;
+
+            _tiers[tier].IncrementCount(1);
+
+            var nextTiers = _gameSave.Tiers.Where(x => x.Value.RequireType == tier);
+
+            foreach (var nextTier in nextTiers)
+            {
+                _tiers[nextTier.Value.Type].CheckEnable(_tiers[tier].GetCount());//.UpdateTier();
+            }
+
+            //if (newCount >= 20)
+            //{
+            //    CityBtn.IsEnabled = true;
+            //}
+
+            UpdateTierText(tier);
+        }
+
         private void OnPersonCounterClicked(object sender, EventArgs e)
         {
-            var button = (Button)sender;
+
+            var button = (CustomButton)sender;
             var buttonName = button.AutomationId;
 
             var tier = TierType.People;
@@ -230,7 +256,7 @@ namespace bme_fon_ferallan.Clicker
                 CityBtn.IsEnabled = true;
             }
 
-            UpdateTierText("Person");
+            UpdateTierText(TierType.People);
         }
 
         private void OnCityCounterClicked(object sender, EventArgs e)
@@ -245,9 +271,9 @@ namespace bme_fon_ferallan.Clicker
                 CountryBtn.IsEnabled = true;
             }
 
-            ResetTier("Person");
-            UpdateTierText("City");
-            UnlockTier("Country");
+            ResetTier(TierType.People);
+            UpdateTierText(TierType.City);
+            UnlockTier(TierType.Country);
         }
 
         private void OnCountryCounterClicked(object sender, EventArgs e)
@@ -262,10 +288,10 @@ namespace bme_fon_ferallan.Clicker
                 PlanetBtn.IsEnabled = true;
             }
 
-            ResetTier("Person");
-            ResetTier("City");
-            UpdateTierText("Country");
-            UnlockTier("Planet");
+            ResetTier(TierType.People);
+            ResetTier(TierType.City);
+            UpdateTierText(TierType.Country);
+            UnlockTier(TierType.Planet);
         }
 
         private void OnPlanetCounterClicked(object sender, EventArgs e)
@@ -280,10 +306,10 @@ namespace bme_fon_ferallan.Clicker
                 SolarSystemBtn.IsEnabled = true;
             }
 
-            ResetTier("Person");
-            ResetTier("City");
-            ResetTier("Country");
-            UpdateTierText("Planet");
+            ResetTier(TierType.People);
+            ResetTier(TierType.City);
+            ResetTier(TierType.Country);
+            UpdateTierText(TierType.Planet);
         }
 
         private void OnSolarSystemCounterClicked(object sender, EventArgs e)
@@ -293,11 +319,11 @@ namespace bme_fon_ferallan.Clicker
 
             _tiers[tier].SetCount(newCount);
 
-            ResetTier("Person");
-            ResetTier("City");
-            ResetTier("Country");
-            ResetTier("Planet");
-            UpdateTierText("SolarSystem");
+            ResetTier(TierType.People);
+            ResetTier(TierType.City);
+            ResetTier(TierType.Country);
+            ResetTier(TierType.Planet);
+            UpdateTierText(TierType.SolarSystem);
         }
     }
 }

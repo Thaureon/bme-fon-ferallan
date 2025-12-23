@@ -9,5 +9,10 @@
 
         public TierType RequireType;
         public int RequireCount;
+
+        public string TierText => Count == 1 ? $"{Count} {SingleText}" : $"{Count} {MultipleText}";
+
+        public string SingleText;
+        public string MultipleText;
     }
 }
