@@ -85,11 +85,27 @@ namespace bme_fon_ferallan.Clicker.Tiers
         public void SetCount(int newCount)
         {
             _data.Count = newCount;
+
+            SetText();
         }
 
-        public void IncrementCount(int increment)
+        public void IncrementCount()
         {
-            _data.Count += increment;
+            _data.Count += _data.IncrementAmount;
+
+            SetText();
+        }
+
+        public void DecrementCount(int amount)
+        {
+            _data.Count -= amount;
+
+            SetText();
+        }
+
+        public void SetIncrementAmount(int amount)
+        {
+            _data.IncrementAmount = amount;
         }
 
         public void CheckEnable(int requirementCount)
@@ -98,11 +114,22 @@ namespace bme_fon_ferallan.Clicker.Tiers
             {
                 Enable();
             }
+            else if (_data.Unlocked)
+            {
+                Disable();
+            }
+
+            UnlockTier();
         }
 
-        public void CheckUnlock()
+        public void UnlockTier()
         {
+            if (!_data.Unlocked)
+            {
+                _data.Unlocked = true;
 
+                Show();
+            }
         }
 
         public void SetText()

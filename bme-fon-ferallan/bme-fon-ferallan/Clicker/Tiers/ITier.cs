@@ -14,9 +14,11 @@ namespace bme_fon_ferallan.Clicker.Tiers
 
         public int GetCount();
         public void SetCount(int newCount);
-        public void IncrementCount(int increment);
+        public void IncrementCount();
+        public void DecrementCount(int amount);
+        public void SetIncrementAmount(int amount);
         public void CheckEnable(int requirementCount);
-        public void CheckUnlock();
+        public void UnlockTier();
         public void SetText();
     }
 }

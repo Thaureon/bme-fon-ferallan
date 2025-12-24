@@ -6,6 +6,7 @@
 
         public TierType Type;
         public int Count;
+        public int IncrementAmount;
 
         public TierType RequireType;
         public int RequireCount;
