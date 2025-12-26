@@ -1,4 +1,6 @@
-﻿namespace bme_fon_ferallan.iOS
+﻿using Plugin.MauiMtAdmob;
+
+namespace bme_fon_ferallan.iOS
 {
     public static class MauiProgram
     {
@@ -7,7 +9,8 @@
             var builder = MauiApp.CreateBuilder();
 
             builder
-                .UseSharedMauiApp();
+                .UseSharedMauiApp()
+                .UseMauiMTAdmob();
 
             return builder.Build();
         }

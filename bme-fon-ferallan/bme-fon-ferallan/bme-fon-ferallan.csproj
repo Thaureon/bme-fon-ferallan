@@ -37,11 +37,15 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.120" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.1" />
+		<PackageReference Include="Plugin.MauiMTAdmob" Version="2.1.0" />
 		<PackageReference Include="RestEase" Version="1.6.4" />
 		<PackageReference Include="RestEase.HttpClientFactory" Version="1.6.4" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Ads\AdsPage.xaml.cs">
+	    <DependentUpon>AdsPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="API\ApiPage.xaml.cs">
 	    <DependentUpon>ApiPage.xaml</DependentUpon>
 	  </Compile>
@@ -54,6 +58,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Ads\AdsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="API\ApiPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
