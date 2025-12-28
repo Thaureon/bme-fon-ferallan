@@ -1,10 +1,11 @@
 ﻿using bme_fon_ferallan.API;
 using bme_fon_ferallan.Clicker;
-using CommunityToolkit.Maui;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RestEase.HttpClientFactory;
 using System.Reflection;
+
+//using Plugin.MauiMtAdmob;
 
 namespace bme_fon_ferallan
 {
@@ -14,7 +15,6 @@ namespace bme_fon_ferallan
         {
             builder
                 .UseMauiApp<App>()
-                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -47,6 +47,8 @@ namespace bme_fon_ferallan
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
+            //builder.UseMauiMTAdmob();
+
 
             return builder;
         }

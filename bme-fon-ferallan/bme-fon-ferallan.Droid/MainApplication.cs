@@ -1,5 +1,4 @@
 using Android.App;
-using Android.Gms.Ads;
 using Android.Runtime;
 
 namespace bme_fon_ferallan.Droid
@@ -18,7 +17,7 @@ namespace bme_fon_ferallan.Droid
         {
             base.OnCreate();
             //MobileAds.
-            MobileAds.Initialize(this);
+            //MobileAds.Initialize(this);
         }
     }
 }

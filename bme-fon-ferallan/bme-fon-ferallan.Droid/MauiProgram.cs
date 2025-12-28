@@ -1,6 +1,4 @@
-﻿using Plugin.MauiMtAdmob;
-
-namespace bme_fon_ferallan.Droid
+﻿namespace bme_fon_ferallan.Droid
 {
     public static class MauiProgram
     {
@@ -9,8 +7,7 @@ namespace bme_fon_ferallan.Droid
             var builder = MauiApp.CreateBuilder();
 
             builder
-                .UseSharedMauiApp()
-                .UseMauiMTAdmob();
+                .UseSharedMauiApp();
 
             return builder.Build();
         }

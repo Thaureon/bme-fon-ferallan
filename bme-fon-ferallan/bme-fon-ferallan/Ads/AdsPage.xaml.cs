@@ -1,4 +1,4 @@
-﻿using Plugin.MauiMtAdmob.Controls;
+﻿//using Plugin.MauiMtAdmob.Controls;
 
 namespace bme_fon_ferallan.Ads
 {
@@ -13,7 +13,7 @@ namespace bme_fon_ferallan.Ads
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            MTAdView ads = new MTAdView();
+            //MTAdView ads = new MTAdView();
         }
     }
 }
